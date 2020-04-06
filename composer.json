@@ -1,0 +1,54 @@
+{
+    "name": "claudiusnascimento/html-blocks",
+    "description": "Html Blocks to use with models",
+    "keywords": [
+        "claudiusnascimento",
+        "html-blocks"
+    ],
+    "homepage": "https://github.com/claudiusnascimento/html-blocks",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Claudius Nascimento",
+            "email": "cau@claudiusnascimento.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "illuminate/support": "^6.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^4.0",
+        "phpunit/phpunit": "^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ClaudiusNascimento\\HtmlBlocks\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ClaudiusNascimento\\HtmlBlocks\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "ClaudiusNascimento\\HtmlBlocks\\HtmlBlocksServiceProvider"
+            ],
+            "aliases": {
+                "HtmlBlocks": "ClaudiusNascimento\\HtmlBlocks\\HtmlBlocksFacade"
+            }
+        }
+    }
+}
