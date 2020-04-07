@@ -15,6 +15,7 @@ class CreateHtmlBlocksTable extends Migration
     {
         Schema::create('html_blocks', function (Blueprint $table) {
             $table->id();
+            $table->string('key');
             $table->string('rel');
             $table->bigInteger('rel_id')->unsigned();
             $table->string('title')->nullable();
@@ -23,7 +24,8 @@ class CreateHtmlBlocksTable extends Migration
             $table->boolean('active')->default(false);
             $table->integer('order')->default(0);
             $table->string('image')->nullable();
-            $table->string('layout');
+            $table->string('layout')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
