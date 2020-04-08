@@ -29,7 +29,7 @@ class HtmlBlocksRequest extends FormRequest
 
         return [
             'rel' => 'required|string',
-            'rel_id' => 'required|integer',
+            'rel_id' => 'required|integer'
             // 'key' => 'required',
         ];
     }

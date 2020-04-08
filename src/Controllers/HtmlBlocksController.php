@@ -18,8 +18,43 @@ class HtmlBlocksController extends BaseController
     public function store(HtmlBlocksRequest $request)
     {
 
+        return $this->doAction('create', $request);
+    }
+
+    public function update(HtmlBlocksRequest $request, $id)
+    {
+        return $this->doAction('update', $request);
+    }
+
+    public function destroy($id)
+    {
+        dd($id);
+
+        if($block = HtmlBlock::where('rel', $rel)->find($id))
+        {
+            $block->delete();
+            session()->flash('block_message', [
+                    'type' => 'success',
+                    'message' => 'Bloco deletado com sucesso'
+                ]
+            );
+
+            return redirect()->back();
+        }
+
+        session()->flash('block_message', [
+                'type' => 'error',
+                'message' => 'Bloco não encontrado'
+            ]
+        );
+
+        return redirect()->back();
+    }
+
+    public function doAction($action, $request)
+    {
         try {
-            $block = HtmlBlock::create($request->all());
+            $block = HtmlBlock::{$action}($request->all());
         } catch (Exception $e) {
 
             //dd($e->getMessage());
@@ -28,25 +63,23 @@ class HtmlBlocksController extends BaseController
 
             $error = env('APP_DEBUG', false) ?
                                 $e->getMessage() :
-                                'Erro ao cadastrar bloco de html';
+                                'Erro ao '. ($action == 'create' ? 'criar' : 'atualizar') .' bloco de html';
+
+            $bag = $action == 'create' ? 'Create' : 'Update';
 
             return redirect()
                     ->back()
                     ->withInput()
-                    ->withErrors($error, $request->get('errorBag', 'htmlBlocksCreateErrorBag'));
+                    ->withErrors($error, $request->get('errorBag', 'htmlBlocks'. $bag .'ErrorBag'));
         }
 
+        session()->flash('block_message', [
+                'type' => 'success',
+                'message' => 'Bloco '. ($action == 'create' ? 'criado' : 'atualizado') .' com sucesso'
+            ]
+        );
+
         return redirect()->back();
-    }
-
-    public function update(HtmlBlocksRequest $request, $id)
-    {
-        dd('update', $request->all());
-    }
-
-    public function destroy($id)
-    {
-        dd('destroy', $request->all());
     }
 
 }

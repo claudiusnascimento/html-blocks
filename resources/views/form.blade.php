@@ -17,11 +17,12 @@
                     method="POST"
                     enctype="multipart/form-data">
 
+                    <input type="hidden" name="old_block_{{ $block->id }}" value="1">
                     <input type="hidden" name="errorBag" value="htmlBlocksEditErrorBag_{{ $block->id }}">
                     <input type="hidden" name="_method" value="PUT">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-                    @include('html-blocks::inputs', ['block', $block])
+                    @include('html-blocks::inputs', ['block' => $block])
 
                     <button type="submit" class="btn btn-success">Salvar</button>
 
@@ -45,14 +46,27 @@
         method="POST"
         enctype="multipart/form-data">
 
+        <input type="hidden" name="old_block_0" value="1">
+
         <input type="hidden" name="errorBag" value="htmlBlocksCreateErrorBag">
 
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-        @include('html-blocks::inputs')
+        @include('html-blocks::inputs', ['block' => null])
 
         <button type="submit" class="btn btn-success">Salvar</button>
 
     </form>
 
 </div>
+
+<script>
+
+    var errorId = 'html-block-errors';
+    var el = document.getElementById(errorId);
+
+    if(el) {
+        el.scrollIntoView();
+    }
+
+</script>

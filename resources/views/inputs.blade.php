@@ -11,19 +11,33 @@
             ];
 @endphp
 
+@php
+    $old = old('old_block_' . ($block ? $block->id : '0'), false);
+@endphp
+
 <div class="checkbox">
     <label>
-      <input name="active" value="1" checked="{{ old('active', true) }}" type="checkbox"> Ativo
+      <input
+        name="active"
+        value="1"
+        checked="{{ $old ? old('active') : optional($block)->active }}"
+        type="checkbox"> Ativo
     </label>
 </div>
 
 @foreach($htmlBlocksFields as $key => $field)
+
     <div class="form-group">
         <label for="{{ $key }}">{{ $field }}:</label>
-        <input type="text" name="{{ $key }}" value="{{ old($key, $block->{$key}) }}" class="form-control">
+        <input
+            type="text"
+            name="{{ $key }}"
+            value="{{ $old ? old($key) : optional($block)->{$key} }}"
+            class="form-control">
     </div>
+
 @endforeach
 
 <div class="form-group">
-    <textarea name="content" class="{{ config('html-blocks.wysisyg_class') }}" cols="30" rows="10">{{ old('content', $block->content) }}</textarea>
+    <textarea name="content" class="{{ config('html-blocks.wysisyg_class') }}" cols="30" rows="10">{{ $old ? old('content') : optional($block)->content }}</textarea>
 </div>
