@@ -46,3 +46,5 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 ## Laravel Package Boilerplate
 
 This package was generated using the [Laravel Package Boilerplate](https://laravelpackageboilerplate.com).
+
+docker-compose exec app php artisan migrate --path=/packages/claudiusnascimento/html-blocks/database/migrations/2020_04_05_000000_create_html_blocks_table.php

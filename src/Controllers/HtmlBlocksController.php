@@ -18,17 +18,83 @@ class HtmlBlocksController extends BaseController
     public function store(HtmlBlocksRequest $request)
     {
 
-        return $this->doAction('create', $request);
+        $errorBag = $request->get('errorBag');
+
+        try {
+
+            $block = HtmlBlock::create($request->all());
+
+        } catch (Exception $e) {
+
+            //dd($e->getMessage());
+            \Log::error('HTML_BLOCKS_ERROR::');
+            \Log::error($e->getTraceAsString());
+
+            $error = env('APP_DEBUG', false) ?
+                                $e->getMessage() :
+                                'Erro ao criar bloco de html';
+
+            return redirect()
+                    ->back()
+                    ->withInput()
+                    ->withErrors($error, $errorBag);
+        }
+
+        session()->flash('block_message', [
+                'type' => 'success',
+                'message' => 'Bloco criado com sucesso'
+            ]
+        );
+
+        return redirect()->back();
+
     }
 
     public function update(HtmlBlocksRequest $request, $id)
     {
-        return $this->doAction('update', $request);
+
+        $block = HtmlBlock::where('rel', $request->get('rel'))->find($id);
+
+        $errorBag = $request->get('errorBag');
+
+        if(!$block) {
+
+            return redirect()
+                    ->back()
+                    ->withInput()
+                    ->withErrors('Bloco não encontrado', $errorBag);
+        }
+
+        try {
+
+            $block = $block->update($request->all());
+
+        } catch (Exception $e) {
+
+            \Log::error('HTML_BLOCKS_ERROR::');
+            \Log::error($e->getTraceAsString());
+
+            $error = env('APP_DEBUG', false) ?
+                                $e->getMessage() :
+                                'Erro ao criar bloco de html';
+
+            return redirect()
+                    ->back()
+                    ->withInput()
+                    ->withErrors($error, $errorBag);
+        }
+
+        session()->flash($errorBag, [
+                'type' => 'success',
+                'message' => 'Bloco editado com sucesso'
+            ]
+        );
+
+        return redirect()->back();
     }
 
     public function destroy($id)
     {
-        dd($id);
 
         if($block = HtmlBlock::where('rel', $rel)->find($id))
         {
@@ -43,39 +109,8 @@ class HtmlBlocksController extends BaseController
         }
 
         session()->flash('block_message', [
-                'type' => 'error',
+                'type' => 'danger',
                 'message' => 'Bloco não encontrado'
-            ]
-        );
-
-        return redirect()->back();
-    }
-
-    public function doAction($action, $request)
-    {
-        try {
-            $block = HtmlBlock::{$action}($request->all());
-        } catch (Exception $e) {
-
-            //dd($e->getMessage());
-            \Log::error('HTML_BLOCKS_ERROR::');
-            \Log::error($e->getTraceAsString());
-
-            $error = env('APP_DEBUG', false) ?
-                                $e->getMessage() :
-                                'Erro ao '. ($action == 'create' ? 'criar' : 'atualizar') .' bloco de html';
-
-            $bag = $action == 'create' ? 'Create' : 'Update';
-
-            return redirect()
-                    ->back()
-                    ->withInput()
-                    ->withErrors($error, $request->get('errorBag', 'htmlBlocks'. $bag .'ErrorBag'));
-        }
-
-        session()->flash('block_message', [
-                'type' => 'success',
-                'message' => 'Bloco '. ($action == 'create' ? 'criado' : 'atualizado') .' com sucesso'
             ]
         );
 

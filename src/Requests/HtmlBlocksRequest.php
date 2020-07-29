@@ -25,11 +25,12 @@ class HtmlBlocksRequest extends FormRequest
     {
 
         $this->errorBag = $this->get('errorBag', 'default');
-        $this->merge(['active' => $this->has('active')]);
+
 
         return [
             'rel' => 'required|string',
-            'rel_id' => 'required|integer'
+            'rel_id' => 'required|integer',
+            'order' => 'integer',
             // 'key' => 'required',
         ];
     }
@@ -41,7 +42,21 @@ class HtmlBlocksRequest extends FormRequest
             'rel.string' => 'Relação inválida',
             'rel_id.required' => 'Sem identificação de instância',
             'rel_id.integer' => 'ID da instância inválido',
+            'order.integer' => 'Ordem deve ser um número inteiro',
             // 'key.required' => 'Preencha a chave',
         ];
     }
+
+    public function prepareForValidation()  {
+
+        $order = $this->get('order');
+
+        if(!$order || !is_int($order)) {
+            $this->merge(['order' => 0]);
+        }
+
+        $this->merge(['active' => $this->has('active')]);
+
+    }
+
 }

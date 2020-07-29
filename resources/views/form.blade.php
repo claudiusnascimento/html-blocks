@@ -12,6 +12,10 @@
                     'errorBagName' => 'htmlBlocksEditErrorBag_' . $block->id
                 ])
 
+                @include('html-blocks::block-message', [
+                    'session_flash_key' => 'htmlBlocksEditErrorBag_' . $block->id
+                ])
+
                 <form
                     action="{{ route('html-blocks.update', $block->id) }}"
                     method="POST"
@@ -41,6 +45,10 @@
 
     @include('html-blocks::errors', ['errorBagName' => 'htmlBlocksCreateErrorBag'])
 
+    @include('html-blocks::block-message', [
+        'session_flash_key' => 'htmlBlocksCreateErrorBag'
+    ])
+
     <form
         action="{{ route('html-blocks.store') }}"
         method="POST"
@@ -62,11 +70,14 @@
 
 <script>
 
-    var errorId = 'html-block-errors';
-    var el = document.getElementById(errorId);
+    var html_blocks_message_id = 'html-block-message';
+    var el = document.getElementById(html_blocks_message_id);
+    var htmlElement = document.documentElement;
+    htmlElement.style.scrollBehavior = 'smooth';
 
     if(el) {
         el.scrollIntoView();
+        setTimeout(function() { htmlElement.style.scrollBehavior = ""}, 1000);
     }
 
 </script>

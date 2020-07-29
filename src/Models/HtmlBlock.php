@@ -9,7 +9,7 @@ class HtmlBlock extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = [
+    public $fillable = [
         'key',
         'rel',
         'rel_id',
@@ -21,5 +21,6 @@ class HtmlBlock extends Model
         'image',
         'layout'
     ];
+
 }
 

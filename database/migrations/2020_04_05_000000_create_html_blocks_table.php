@@ -15,14 +15,14 @@ class CreateHtmlBlocksTable extends Migration
     {
         Schema::create('html_blocks', function (Blueprint $table) {
             $table->id();
-            $table->string('key');
+            $table->string('key')->nullable();
             $table->string('rel');
             $table->bigInteger('rel_id')->unsigned();
             $table->string('title')->nullable();
             $table->string('sub_title')->nullable();
             $table->string('content')->nullable();
-            $table->boolean('active')->default(false);
-            $table->integer('order')->default(0);
+            $table->boolean('active')->default(false)->nullable();
+            $table->integer('order')->default(0)->nullable();
             $table->string('image')->nullable();
             $table->string('layout')->nullable();
             $table->softDeletes();

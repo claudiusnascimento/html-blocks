@@ -13,15 +13,15 @@
 
 @php
     $old = old('old_block_' . ($block ? $block->id : '0'), false);
+    $activeChecked = $old ? old('active') : optional($block)->active;
+
 @endphp
 
 <div class="checkbox">
     <label>
       <input
         name="active"
-        value="1"
-        checked="{{ $old ? old('active') : optional($block)->active }}"
-        type="checkbox"> Ativo
+        value="1" {{ empty($activeChecked) ? '' : 'checked="checked"' }} type="checkbox"> Ativo
     </label>
 </div>
 
@@ -39,5 +39,11 @@
 @endforeach
 
 <div class="form-group">
-    <textarea name="content" class="{{ config('html-blocks.wysisyg_class') }}" cols="30" rows="10">{{ $old ? old('content') : optional($block)->content }}</textarea>
+    <textarea
+        name="content"
+        class="{{ config('html-blocks.wysisyg_class') }}"
+        cols="30"
+        rows="10"
+        data-upload-dir="{{ $relationString }}">{{ $old ? old('content') : optional($block)->content }}
+    </textarea>
 </div>
