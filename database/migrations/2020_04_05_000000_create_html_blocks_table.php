@@ -20,7 +20,7 @@ class CreateHtmlBlocksTable extends Migration
             $table->bigInteger('rel_id')->unsigned();
             $table->string('title')->nullable();
             $table->string('sub_title')->nullable();
-            $table->string('content')->nullable();
+            $table->text('content')->nullable();
             $table->boolean('active')->default(false)->nullable();
             $table->integer('order')->default(0)->nullable();
             $table->string('image')->nullable();
